@@ -46,7 +46,7 @@ class Datalogger:
         self.influxdb_write_api.close()
         self.influxdb_write_api = None
 
-    def run_forever(self, function: typing.Callable[[Datalogger], None], retry: bool = True):
+    def run_forever(self, function: typing.Callable[[Datalogger], None]):
         with self:
             timeout = 60
             while True:
