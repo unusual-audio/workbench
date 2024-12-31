@@ -1,11 +1,17 @@
 import math
 
 import numpy as np
-from si_prefix import si_format
+from si_prefix import split, prefix
+
+def si_format(value, precision=1, format_str="{value} {prefix}", rel=False):
+    svalue, expof10 = split(value, precision)
+    value_format = ("%%+.%df" if rel else "%%.%df") % precision
+    value_str = value_format % svalue
+    return format_str.format(value=value_str, prefix=prefix(expof10).strip())
 
 
-def format_voltage(x: float, precision=1, unit="V"):
-    return si_format(x, precision=precision) + unit
+def format_voltage(x: float, precision=1, unit="V", rel=False):
+    return si_format(x, precision=precision, rel=rel) + unit
 
 
 def format_timedelta(duration: np.timedelta64) -> str:
