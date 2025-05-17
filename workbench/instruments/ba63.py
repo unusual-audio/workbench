@@ -25,6 +25,8 @@ class BA63(HIDInstrument):
         latin_greek_2 = Encoding(0x36, "cp737")
         katakana = Encoding(0x63, "cp857")
 
+    instrument_name = "Wincor Nixdorf BA63"
+
     def __init__(self, vid=None, pid=None, serial=None, path=None):
         super().__init__(vid, pid, serial, path)
         self.country = None

@@ -9,10 +9,21 @@ import pyvisa.resources
 
 class Instrument(metaclass=abc.ABCMeta):
 
+    instrument_name: str = None
+
     @classmethod
     @abc.abstractmethod
     def connect(cls, address) -> typing.Self:
         pass
+
+    def _repr_html_(self):
+        """Return HTML representation for Jupyter"""
+        return f"""
+        <div style="background-color: #eee; padding: 24px; margin: 24px; border-radius: 12px;">
+            <h3>{getattr(self, "instrument_name", None) or self.__class__.__name__}</h3>
+            <p>Address: {self.resource_name}</p>
+        </div>
+        """
 
 
 class VisaInstrument(Instrument, pyvisa.resources.MessageBasedResource):

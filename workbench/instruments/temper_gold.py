@@ -8,6 +8,8 @@ from workbench.instruments import HIDInstrument
 
 class TemperGold(HIDInstrument):
 
+    instrument_name = "Temper Gold"
+
     def read_temperature(self, timeout: int = 1000) -> float:
         response = b""
         self.write(b"\x01\x80\x33\x01\x00\x00\x00\x00")

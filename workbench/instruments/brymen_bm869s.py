@@ -31,6 +31,8 @@ class BrymenBM869S(HIDInstrument):
             0b0110001: "n",
         }
 
+        instrument_name = "Brymen BM869S"
+
         def __init__(self, reply):
             self.reply = reply
 

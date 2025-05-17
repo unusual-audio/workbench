@@ -7,6 +7,8 @@ from workbench.instruments import VisaInstrument
 
 class KeysightDAQ970A(VisaInstrument):
 
+    instrument_name = "Keysight DAQ970A"
+
     def screenshot(self) -> Image:
         self.write("HCOPy:SDUMp:DATA?")
         data = self.read_raw()

@@ -2,4 +2,5 @@ from workbench.instruments import VisaInstrument
 
 
 class KeysightE36105B(VisaInstrument):
-    pass
+
+    instrument_name = "Keysight E36105B"
