@@ -78,11 +78,12 @@ class Datalogger:
             default_tags["experiment"] = experiment
         return cls.from_env_properties(debug=debug, **default_tags)
 
-    def load_experiment_data(self, start, dtype):
+    def load_experiment_data(self, start, stop=None, *, dtype):
+        range_args = f"start: {start}, stop: {stop}" if stop is not None else f"start: {start}"
         stream = self.influxdb_query_api.query_stream(f"""
             import "date"
             from(bucket: "measurements")
-              |> range(start: {start})
+              |> range({range_args})
               |> filter(fn: (r) => r["experiment"] == "{self.default_tags['experiment']}")
               |> pivot(rowKey: ["_time"], columnKey: ["_measurement"], valueColumn: "_value")
               |> rename(columns: {{_time: "timestamp"}})

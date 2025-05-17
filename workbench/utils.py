@@ -1,5 +1,3 @@
-import math
-
 import numpy as np
 from si_prefix import split, prefix
 
@@ -26,10 +24,10 @@ def get_temperature_fit(x: np.array, y: np.array, temperature: np.array, degree)
 
 
 def correct_temperature_coefficient(
-        y: np.array, temperatures: np.array, reference_temperature: float, degree: int) -> np.poly1d:
+        y: np.array, temperatures: np.array, reference_temperature: float, degree: int) -> np.array:
     coefficients = np.polyfit(temperatures, y, degree)
     correction = np.polyval(coefficients, temperatures) - np.polyval(coefficients, reference_temperature)
-    return np.poly1d(y - correction)
+    return np.array(np.poly1d(y - correction))
 
 
 def get_type_a_uncertainty(y: np.array) -> float:
@@ -68,7 +66,7 @@ def vrms_to_vpp(x):
 
 
 def vrms_to_dbu(x):
-    return 20 * math.log10(x / (600 * 1e-3) ** 0.5)
+    return 20 * np.log10(x / (600 * 1e-3) ** 0.5)
 
 
 def vpp_to_vrms(x):
