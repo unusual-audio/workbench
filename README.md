@@ -18,7 +18,7 @@ Test and measurement code for my bench.
 - **Data Analysis Utilities**:
   - Uncertainty calculation
   - Measurement formatting and unit handling
-  - Time series analysis
+  - Time series analysis with InfluxDB integration
 
 ## Installation
 
