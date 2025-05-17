@@ -41,10 +41,8 @@ poetry run python
 from workbench.instruments.keysight_34461a import Keysight34461A
 
 # Connect to the instrument
-dmm = Keysight34461A.connect("USB0::0x2A8D::0x0101::MY12345678::INSTR")
-
-# Display a message on the instrument's screen
-dmm.display_text = "Hello, World!"
+with Keysight34461A.connect("USB0::0x2A8D::0x0101::MY12345678::INSTR") as dmm:
+    dmm.display_text = "Hello, World!"
 ```
 
 ### Uncertainty Analysis
