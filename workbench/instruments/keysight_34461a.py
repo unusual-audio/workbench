@@ -6,7 +6,6 @@ from workbench.instruments import VisaInstrument
 
 
 class Keysight34461A(VisaInstrument):
-
     instrument_name = "Keysight 34461A"
 
     @property

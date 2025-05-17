@@ -6,7 +6,6 @@ from workbench.instruments import VisaInstrument
 
 
 class KeysightDAQ970A(VisaInstrument):
-
     instrument_name = "Keysight DAQ970A"
 
     def screenshot(self) -> Image:

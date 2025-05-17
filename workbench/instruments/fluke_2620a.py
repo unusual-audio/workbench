@@ -4,7 +4,6 @@ from workbench.instruments import SerialInstrument
 
 
 class Fluke2620A(SerialInstrument):
-
     instrument_name = "Fluke 2620A"
 
     @property

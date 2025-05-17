@@ -2,13 +2,11 @@ import abc
 import typing
 from abc import ABC
 
-import dwfpy
 import hid
 import pyvisa.resources
 
 
 class Instrument(metaclass=abc.ABCMeta):
-
     instrument_name: str = None
 
     @classmethod
@@ -50,7 +48,3 @@ class SerialInstrument(pyvisa.resources.SerialInstrument, Instrument, ABC):
         if cls.default_timeout is not None:
             instrument.timeout = cls.default_timeout
         return instrument
-
-
-class DWFInstrument(dwfpy.Device, Instrument, ABC):
-    pass
