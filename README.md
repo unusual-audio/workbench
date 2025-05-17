@@ -29,8 +29,8 @@ Workbench uses Poetry for dependency management. To install:
 git clone git@github.com:unusual-audio/workbench.git
 cd workbench
 
-# Install with Poetry
 poetry install
+poetry run python
 ```
 
 ## Usage Examples
@@ -61,7 +61,7 @@ type_a = get_type_a_uncertainty(measurements)
 
 # Calculate Type B uncertainty (systematic, based on instrument specifications)
 # For example, for a Keysight 34461A on 10V range: ±(50 ppm of reading + 5 ppm of range)
-expanded_type_b = abs(np.mean(measurements)) * 50e-6 + 10 * 5e-6
+expanded_type_b = abs(measurements) * 50e-6 + 10 * 5e-6
 type_b = get_type_b_uncertainty(expanded_type_b, k=2)
 
 # Calculate expanded uncertainty (k=2 for 95% confidence)
@@ -69,18 +69,6 @@ expanded_uncertainty = get_expanded_uncertainty(type_a, type_b, k=2)
 
 print(f"Measurement: {np.mean(measurements):.7f} ± {expanded_uncertainty:.7f} V (k=2)")
 ```
-
-See the `examples` directory for more detailed examples.
-
-## Project Structure
-
-- `workbench/`: Main package
-  - `instruments/`: Instrument driver classes
-  - `datalogging/`: Data logging utilities
-  - `utils.py`: Utility functions for data analysis
-- `examples/`: Example notebooks demonstrating usage
-- `experiments/`: Experimental notebooks and scripts
-- `tests/`: Unit tests
 
 ## License
 
