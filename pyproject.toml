@@ -5,7 +5,7 @@ description = ""
 authors = ["Unusual Audio <unusualaudio@protonmail.com>"]
 
 [tool.poetry.dependencies]
-python = ">=3.13,<3.14"
+python = ">=3.13,<4"
 jupyter = "^1.0.0"
 pyusb = "^1.2.1"
 pyvisa = "^1.15.0"
@@ -19,7 +19,7 @@ influxdb-client = "^1.43.0"
 python-dotenv = "^1.1.0"
 matplotlib = "^3.10.1"
 scipy = "^1.15.2"
-pandas = "^2.2.2"
+pandas = "^2.3.0"
 pyvicp = "^1.1.0"
 sympy = "^1.14.0"
 si-prefix = "^1.3.3"
