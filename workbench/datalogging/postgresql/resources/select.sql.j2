@@ -1,0 +1,10 @@
+select
+    time,
+    measurement,
+    value
+from
+    "{{ table }}"
+where
+    time >= %s and time <= %s and experiment = %s
+order by
+    time

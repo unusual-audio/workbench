@@ -1,0 +1,7 @@
+create table if not exists {{ table }} (
+    time timestamp with time zone,
+    measurement text,
+    value float,
+    experiment text
+);
+SELECT create_hypertable('{{ table }}', 'time', if_not_exists => TRUE);
