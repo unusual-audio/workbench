@@ -14,11 +14,14 @@ Test and measurement code for my bench.
   - Fluke 2620A
   - Siglent SDG1022X+
   - Digilent Analog Discovery 3
-
+- **Other supported hardware**
+  - Amaran light fixtures
+  - Wincor Nixdorf BA63
+  - TEMPer Gold
 - **Data Analysis Utilities**:
   - Uncertainty calculation
   - Measurement formatting and unit handling
-  - Time series analysis with InfluxDB integration
+  - Dataloggers (CSV, InfluxDB, Postgres / TimesclaleDB)
 
 ## Installation
 
