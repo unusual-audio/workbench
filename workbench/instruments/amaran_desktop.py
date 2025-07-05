@@ -38,7 +38,6 @@ class AmaranDesktop(Instrument):
     def __init__(self, uri: str, secret_key: str):
         self.uri = uri
         self.secret_key = secret_key
-        self.token = self.get_token(secret_key)
 
     def get_fixture(self, name: str) -> AmaranFixture:
         for i in self.request("get_fixture_list"):
@@ -60,7 +59,7 @@ class AmaranDesktop(Instrument):
                 "client_id": 1,
                 "request_id": request_id,
                 "action": action,
-                "token": self.token,
+                "token": self.get_token(self.secret_key),
             }
             request_message.update(kwargs or {})
 
