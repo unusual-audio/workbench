@@ -1,5 +1,31 @@
+from traceback import print_exc
+from functools import wraps
+from time import sleep
+
 import numpy as np
 from si_prefix import split, prefix
+
+
+def retry(min_delay=1, max_delay=128, multiplier=2):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            delay = min_delay
+            while True:
+                try:
+                    return f(*args, **kwargs)
+                except Exception as e:
+                    print_exc()
+                    print(f"Retrying in {delay} seconds: {e}")
+                    sleep(delay)
+                    delay *= multiplier
+                    if delay > max_delay:
+                        delay = max_delay
+
+        return wrapper
+
+    return decorator
+
 
 def si_format(value, precision=1, format_str="{value} {prefix}", rel=False):
     svalue, expof10 = split(value, precision)
@@ -10,6 +36,12 @@ def si_format(value, precision=1, format_str="{value} {prefix}", rel=False):
 
 def format_voltage(x: float, precision=1, unit="V", rel=False):
     return si_format(x, precision=precision, rel=rel) + unit
+
+
+def group_decimals(x: float, decimals=6, group=3, unit="", sep=" ", unit_sep=" ") -> str:
+    integer, _, frac = f"{x:.{decimals}f}".partition(".")
+    grouped_frac = sep.join([frac[i:i + group] for i in range(0, len(frac), group)])
+    return f"{integer}{'.' if grouped_frac else ''}{grouped_frac}{unit_sep + unit if unit else ''}"
 
 
 def format_timedelta(duration: np.timedelta64) -> str:

@@ -32,7 +32,7 @@ class PostgreSQLDatalogger(Datalogger):
         self.connection.close()
 
     def log(self, measurement: str, value: ValueType, experiment: str, *, timestamp: np.datetime64 = None):
-        timestamp = timestamp or np.datetime64(datetime.now(timezone.utc).replace(tzinfo=None))
+        timestamp = timestamp or np.datetime64("now")
         self.cursor.execute(self.insert_into.render(table=self.table), (
             timestamp.astype(datetime).replace(tzinfo=timezone.utc),
             measurement,
@@ -47,7 +47,7 @@ class PostgreSQLDatalogger(Datalogger):
             *,
             experiment: str,
     ) -> np.ndarray:
-        time_to = time_to or np.datetime64(datetime.now(timezone.utc).replace(tzinfo=None)) + np.timedelta64(1, "s")
+        time_to = time_to or np.datetime64("now") + np.timedelta64(1, "s")
         start = time_from.astype(datetime).replace(tzinfo=timezone.utc).isoformat()
         stop = time_to.astype(datetime).replace(tzinfo=timezone.utc).isoformat()
         with self.connection.cursor(row_factory=namedtuple_row) as cur:
@@ -57,4 +57,8 @@ class PostgreSQLDatalogger(Datalogger):
 
         dtype = [("time", "datetime64[ns]"), ("measurement", "U64"), ("value", "f8")]
         return self.pivot_measurements(
-            np.array([(np.datetime64(r.time.replace(tzinfo=None)), r.measurement, r.value) for r in rows], dtype=dtype))
+            np.array([(
+                np.datetime64(r.time.astimezone(timezone.utc).replace(tzinfo=None)),
+                r.measurement,
+                r.value,
+            ) for r in rows], dtype=dtype))

@@ -27,6 +27,9 @@ dependencies = [
     "jinja2 (>=3.1.6,<4.0.0)",
     "influxdb-client (>=1.49.0,<2.0.0)",
     "websockets (>=15.0.1,<16.0.0)",
+    "humanize (>=4.12.3,<5.0.0)",
+    "python-usbtmc (>=0.8,<0.9)",
+    "soundfile (>=0.13.1,<0.14.0)",
 ]
 
 [project.scripts]

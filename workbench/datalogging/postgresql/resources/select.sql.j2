@@ -5,6 +5,6 @@ select
 from
     "{{ table }}"
 where
-    time >= %s and time <= %s and experiment = %s
+    time >= %s and time <= %s and experiment like %s
 order by
     time

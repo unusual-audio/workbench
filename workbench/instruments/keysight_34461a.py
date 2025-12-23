@@ -24,7 +24,7 @@ class Keysight34461A(VisaInstrument):
     def display_text(self, display_text: str):
         self.write("DISPlay:TEXT \"" + display_text.replace("\"", "\"\"") + "\"\n")
 
-    def screenshot(self) -> Image:
+    def screenshot(self) -> Image.Image:
         self.write("HCOPy:SDUMp:DATA?")
         data = self.read_raw()
         return Image.open(io.BytesIO(data[int(data[1:2].decode()) + 2:]))
