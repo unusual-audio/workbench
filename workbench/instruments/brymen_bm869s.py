@@ -1,4 +1,4 @@
-import typing
+from typing import Self, Tuple, Iterator
 
 import hid
 
@@ -65,7 +65,7 @@ class BrymenBM869S(HIDInstrument):
                 self.chars[self.reply[13] >> 1],
             ]).strip()
 
-    def read_displays(self, timeout: int = 4000) -> (str, str):
+    def read_displays(self, timeout: int = 4000) -> Tuple[str, str]:
         self.write(b"\x00\x00\x86\x66")
         reply = b""
         reply += self.read(8, timeout)
@@ -79,13 +79,13 @@ class BrymenBM869S(HIDInstrument):
         return primary_display
 
     @classmethod
-    def connect(cls, address: str = None) -> typing.Self:
+    def connect(cls, address: str = None) -> Self:
         for i in cls.enumerate():
             if address is None or i["serial_number"] == address:
                 return cls(path=i["path"])
         raise IOError("Device not found")
 
     @classmethod
-    def enumerate(cls) -> typing.Iterator[dict]:
+    def enumerate(cls) -> Iterator[dict]:
         for i in hid.enumerate(0x0820, 0x0001):
             yield i
