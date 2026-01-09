@@ -6,6 +6,7 @@ Test and measurement code for my bench.
 
 - **Supported Instruments**:
   - Keysight 34461A
+  - Keysight 34465A
   - Keysight DAQ970A
   - Keysight E36105B
   - Keysight DSOX1204G
@@ -21,7 +22,7 @@ Test and measurement code for my bench.
 - **Data Analysis Utilities**:
   - Uncertainty calculation
   - Measurement formatting and unit handling
-  - Dataloggers (CSV, InfluxDB, Postgres / TimesclaleDB)
+  - Dataloggers (CSV, InfluxDB, Postgres / TimescaleDB)
 
 ## Installation
 
