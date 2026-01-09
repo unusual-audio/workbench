@@ -4,7 +4,7 @@ import json
 from base64 import b64decode, b64encode
 from os import getenv, urandom
 from random import randint
-from time import time
+from time import time, sleep
 from typing import Any
 
 import dotenv
@@ -20,6 +20,12 @@ class AmaranFixture:
         self.amaran_desktop = amaran_desktop
         self.name = name
         self.node_id = node_id
+
+    def get_sleep(self) -> bool:
+        return self.amaran_desktop.request("get_sleep", node_id=self.node_id)
+
+    def set_sleep(self, sleep: bool):
+        self.amaran_desktop.request("set_sleep", node_id=self.node_id, args={"sleep": bool(sleep)})
 
     def get_intensity(self) -> int:
         return self.amaran_desktop.request("get_intensity", node_id=self.node_id)
@@ -51,7 +57,7 @@ class AmaranDesktop(Instrument):
     def request(self, action: str, **kwargs: Any) -> Any:
         request_id = randint(0, 32000)
         ws = WebSocket()
-        ws.connect(self.uri)
+        ws.connect(self.uri)  # See <https://tools.sidus.link/openapi/docs/protocol>
         try:
             request_message = {
                 "version": 2,
