@@ -71,6 +71,12 @@ class AmaranDesktop(Instrument):
         finally:
             ws.close()
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
     @classmethod
     def connect(cls, uri: str = "ws://127.0.0.1:12345/") -> AmaranDesktop:
         dotenv.load_dotenv()
