@@ -41,6 +41,9 @@ who-cares = "who_cares.__main__:main"
 pytest = "^8.3.5"
 black = "^25.1.0"
 
+[tool.setuptools.package-data]
+workbench = ["resources/**"]
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
