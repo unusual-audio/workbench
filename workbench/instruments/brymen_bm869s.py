@@ -2,7 +2,7 @@ from typing import Self, Tuple, Iterator, Optional
 
 import hid
 
-from workbench.instruments import HIDInstrument
+from workbench.instruments.hid import HIDInstrument
 
 
 class BrymenBM869S(HIDInstrument):

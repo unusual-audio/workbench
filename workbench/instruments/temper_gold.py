@@ -3,7 +3,7 @@ from typing import Optional, Self
 
 import hid
 
-from workbench.instruments import HIDInstrument
+from workbench.instruments.hid import HIDInstrument
 
 
 class TemperGold(HIDInstrument):

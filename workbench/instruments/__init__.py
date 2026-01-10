@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import Optional, Self
+from typing import Self, Union
 
-import hid
 import pyvisa.resources
+from pyvisa.highlevel import VisaLibraryBase
 
 
 class Instrument(ABC):
@@ -19,28 +19,22 @@ class VisaInstrument(Instrument, pyvisa.resources.MessageBasedResource):
     default_timeout = 60_000
 
     @classmethod
-    def connect(cls, address: str) -> Self:
-        instrument = pyvisa.ResourceManager().open_resource(
+    def connect(cls, address: str, *, visa_library: Union[str, VisaLibraryBase] = "") -> Self:
+        instrument = pyvisa.ResourceManager(visa_library).open_resource(
             resource_name=address, resource_pyclass=cls, open_timeout=cls.default_open_timeout)
         if cls.default_timeout is not None:
             instrument.timeout = cls.default_timeout
         return instrument
 
 
-class HIDInstrument(hid.Device, Instrument, ABC):
-    pass
-
-
 class SerialInstrument(pyvisa.resources.SerialInstrument, Instrument, ABC):
+    default_open_timeout = 0
     default_timeout = 60_000
 
     @classmethod
-    def connect(cls, address: str) -> Self:
-        instrument = pyvisa.ResourceManager().open_resource(resource_name=address, resource_pyclass=cls)
+    def connect(cls, address: str, *, visa_library: Union[str, VisaLibraryBase] = "") -> Self:
+        instrument = pyvisa.ResourceManager(visa_library).open_resource(
+            resource_name=address, resource_pyclass=cls, open_timeout=cls.default_open_timeout)
         if cls.default_timeout is not None:
             instrument.timeout = cls.default_timeout
         return instrument
-
-
-class RemoteInstrument(VisaInstrument):
-    pass
