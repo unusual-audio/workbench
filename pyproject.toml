@@ -10,7 +10,6 @@ dependencies = [
     "jupyter (>=1.1.1,<2.0.0)",
     "pyusb (>=1.3.1,<2.0.0)",
     "pyvisa (>=1.15.0,<2.0.0)",
-    "pyvisa-py (>=0.8.0,<0.9.0)",
     "psutil (>=7.0.0,<8.0.0)",
     "zeroconf (>=0.147.0,<0.148.0)",
     "hid (>=1.0.7,<2.0.0)",
@@ -32,6 +31,7 @@ dependencies = [
     "soundfile (>=0.13.1,<0.14.0)",
     "notebook (>=7.5.1,<8.0.0)",
     "cryptography (>=46.0.3,<47.0.0)",
+    "pyvisa-py (>=0.8.1,<0.9.0)",
 ]
 
 [project.scripts]

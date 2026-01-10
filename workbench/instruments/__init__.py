@@ -20,8 +20,8 @@ class VisaInstrument(Instrument, pyvisa.resources.MessageBasedResource):
     default_timeout = 60_000
 
     @classmethod
-    def connect(cls, address) -> typing.Self:
-        instrument = pyvisa.ResourceManager().open_resource(resource_name=address, resource_pyclass=cls)
+    def connect(cls, address, **kwargs) -> typing.Self:
+        instrument = pyvisa.ResourceManager().open_resource(resource_name=address, resource_pyclass=cls, **kwargs)
         if cls.default_timeout is not None:
             instrument.timeout = cls.default_timeout
         return instrument
@@ -40,3 +40,8 @@ class SerialInstrument(pyvisa.resources.SerialInstrument, Instrument, ABC):
         if cls.default_timeout is not None:
             instrument.timeout = cls.default_timeout
         return instrument
+
+class RemoteInstrument(Instrument):
+
+    def connect(self, address) -> typing.Self:
+        pass
