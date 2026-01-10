@@ -5,7 +5,7 @@ from base64 import b64decode, b64encode
 from os import getenv, urandom
 from random import randint
 from time import time, sleep
-from typing import Any
+from typing import Any, Optional, Self
 
 import dotenv
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
@@ -84,10 +84,10 @@ class AmaranDesktop(Instrument):
         pass
 
     @classmethod
-    def connect(cls, uri: str = "ws://127.0.0.1:12345/") -> AmaranDesktop:
+    def connect(cls, address: str = "ws://127.0.0.1:12345/") -> Self:
         dotenv.load_dotenv()
         secret_key = getenv("AMARAN_API_KEY")
-        return cls(uri, secret_key)
+        return cls(address, secret_key)
 
     @staticmethod
     def get_token(secret_key):

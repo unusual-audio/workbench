@@ -1,27 +1,27 @@
-import abc
-import typing
-from abc import ABC
+from abc import ABC, abstractmethod
+from typing import Optional, Self
 
 import hid
 import pyvisa.resources
 
 
-class Instrument(metaclass=abc.ABCMeta):
+class Instrument(ABC):
     instrument_name: str = None
 
     @classmethod
-    @abc.abstractmethod
-    def connect(cls, address) -> typing.Self:
+    @abstractmethod
+    def connect(cls, address) -> Self:
         pass
 
 
 class VisaInstrument(Instrument, pyvisa.resources.MessageBasedResource):
-
+    default_open_timeout = 0
     default_timeout = 60_000
 
     @classmethod
-    def connect(cls, address, **kwargs) -> typing.Self:
-        instrument = pyvisa.ResourceManager().open_resource(resource_name=address, resource_pyclass=cls, **kwargs)
+    def connect(cls, address: str) -> Self:
+        instrument = pyvisa.ResourceManager().open_resource(
+            resource_name=address, resource_pyclass=cls, open_timeout=cls.default_open_timeout)
         if cls.default_timeout is not None:
             instrument.timeout = cls.default_timeout
         return instrument
@@ -35,13 +35,12 @@ class SerialInstrument(pyvisa.resources.SerialInstrument, Instrument, ABC):
     default_timeout = 60_000
 
     @classmethod
-    def connect(cls, address) -> typing.Self:
+    def connect(cls, address: str) -> Self:
         instrument = pyvisa.ResourceManager().open_resource(resource_name=address, resource_pyclass=cls)
         if cls.default_timeout is not None:
             instrument.timeout = cls.default_timeout
         return instrument
 
-class RemoteInstrument(Instrument):
 
-    def connect(self, address) -> typing.Self:
-        pass
+class RemoteInstrument(VisaInstrument):
+    pass

@@ -1,4 +1,4 @@
-from typing import Self, Tuple, Iterator
+from typing import Self, Tuple, Iterator, Optional
 
 import hid
 
@@ -79,7 +79,7 @@ class BrymenBM869S(HIDInstrument):
         return primary_display
 
     @classmethod
-    def connect(cls, address: str = None) -> Self:
+    def connect(cls, address: Optional[str] = None) -> Self:
         for i in cls.enumerate():
             if address is None or i["serial_number"] == address:
                 return cls(path=i["path"])

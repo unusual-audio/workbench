@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-import typing
+from typing import Optional, Self
 
 import hid
 
@@ -66,7 +66,7 @@ class BA63(HIDInstrument):
         return results
 
     @classmethod
-    def connect(cls, address: str = None) -> typing.Self:
+    def connect(cls, address: Optional[str] = None) -> Self:
         for i in cls.find():
             if (address is None or address == i["path"]) and i["interface_number"] == 1:
                 return cls(path=i["path"])

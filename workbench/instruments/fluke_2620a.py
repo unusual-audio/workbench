@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Self
 
 from serial import Serial
 
@@ -134,12 +134,12 @@ class Fluke2620A(Instrument):
         self.check()
         return r.decode().strip("\r\n")
 
-    def __enter__(self) -> Fluke2620A:
+    def __enter__(self) -> Self:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.device.close()
 
     @classmethod
-    def connect(cls, address) -> Fluke2620A:
+    def connect(cls, address: str) -> Self:
         return cls(address)
