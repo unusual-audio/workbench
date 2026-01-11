@@ -8,6 +8,12 @@ from pyvisa.highlevel import VisaLibraryBase
 class Instrument(ABC):
     instrument_name: str = None
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
     @classmethod
     @abstractmethod
     def connect(cls, address) -> Self:
