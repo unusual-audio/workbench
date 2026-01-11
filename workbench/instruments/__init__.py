@@ -23,6 +23,7 @@ class Instrument(ABC):
 class VisaInstrument(Instrument, pyvisa.resources.MessageBasedResource):
     default_open_timeout = 0
     default_timeout = 60_000
+    default_read_termination = "\n"
 
     @classmethod
     def connect(cls, address: str, *, visa_library: Union[str, VisaLibraryBase] = "") -> Self:
@@ -30,6 +31,8 @@ class VisaInstrument(Instrument, pyvisa.resources.MessageBasedResource):
             resource_name=address, resource_pyclass=cls, open_timeout=cls.default_open_timeout)
         if cls.default_timeout is not None:
             instrument.timeout = cls.default_timeout
+        if cls.default_read_termination is not None:
+            instrument.read_termination = cls.default_read_termination
         return instrument
 
 
