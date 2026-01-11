@@ -110,7 +110,7 @@ class ChannelConfig:
     @skew.setter
     def skew(self, skew_percent: float):
         if not 0 <= skew_percent <= 100:
-            raise ValueError("Duty cycle must be between 0 and 100")
+            raise ValueError("Skew must be between 0 and 100")
         self.asymmetry = skew_percent / 100.0
 
     @property
@@ -242,6 +242,7 @@ class AudioInterface(Instrument, ABC):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.stream.stop()
+        self.stream.close()
 
     @classmethod
     def connect(cls, address: str) -> Self:
