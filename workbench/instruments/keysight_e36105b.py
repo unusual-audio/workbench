@@ -1,5 +1,3 @@
-from typing import Optional, Self
-
 from workbench.instruments import VisaInstrument
 
 

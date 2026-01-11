@@ -86,7 +86,7 @@ with MOTOUltraLiteMk5.connect() as interface:
     interface.output_config[0].frequency_hz = 1000
 ```
 
-### SCPI Server microframework
+### SCPI server microframework
 
 ```python
 from datetime import date

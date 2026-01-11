@@ -4,8 +4,8 @@ import json
 from base64 import b64decode, b64encode
 from os import getenv, urandom
 from random import randint
-from time import time, sleep
-from typing import Any, Optional, Self
+from time import time
+from typing import Any, Self
 
 import dotenv
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes

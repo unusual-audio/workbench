@@ -1,4 +1,3 @@
-import re
 from traceback import print_exc
 from functools import wraps
 from time import sleep
