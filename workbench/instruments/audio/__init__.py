@@ -21,6 +21,7 @@ class WaveformType(Enum):
     RAMP = "ramp"
     NOISE = "noise"
     DC = "dc"
+    SWEEP = "sweep"
 
 
 class VoltageUnit(Enum):
@@ -42,6 +43,9 @@ class ChannelConfig:
     voltage_unit: VoltageUnit = VoltageUnit.DBFS
     calibration_vrms_at_fs: Optional[float] = None
     output_enabled: bool = False
+    sweep_start_frequency_hz: float = 200.0
+    sweep_stop_frequency_hz: float = 20_000.0
+    sweep_duration_s: float = 1.0
 
     @property
     def period(self) -> float:
@@ -157,6 +161,7 @@ class AudioInterface(Instrument, ABC):
         self.sample_rate = sample_rate
         self.output_channels = output_channels
         self.output_phases = np.zeros(output_channels)
+        self.sweep_times = np.zeros(output_channels)
         self.lock = threading.RLock()
         self.reset()
 
@@ -169,6 +174,7 @@ class AudioInterface(Instrument, ABC):
     def reset(self):
         self.output_config = [self.get_default_channel_config(i) for i in range(self.output_channels)]
         self.output_phases = np.zeros(self.output_channels)
+        self.sweep_times = np.zeros(self.output_channels)
 
     def get_default_channel_config(self, channel: Optional[int] = None) -> ChannelConfig:
         config = ChannelConfig(sample_rate=self.sample_rate)
@@ -212,6 +218,16 @@ class AudioInterface(Instrument, ABC):
                     data = amplitude * (np.random.rand(frame_count) * 2 - 1) + dc_offset
                 elif config.waveform == WaveformType.DC:
                     data = np.full(frame_count, dc_offset)
+                elif config.waveform == WaveformType.SWEEP:
+                    data = amplitude * signal.chirp(
+                        (self.sweep_times[i] + (np.arange(frame_count) / self.sample_rate)) % config.sweep_duration_s,
+                        config.sweep_start_frequency_hz,
+                        config.sweep_duration_s,
+                        config.sweep_stop_frequency_hz,
+                        phi=phase_deg,
+                    ) + dc_offset
+                    self.sweep_times[i] = (
+                            (self.sweep_times[i] + frame_count / self.sample_rate) % config.sweep_duration_s)
                 else:
                     data = np.zeros(frame_count)
 

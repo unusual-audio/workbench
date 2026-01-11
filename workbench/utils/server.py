@@ -242,6 +242,7 @@ class ScpiSignalGenerator(ScpiInstrument):
         WaveformType.RAMP: ("RAMP", ("RAMP",)),
         WaveformType.NOISE: ("NOISe", ("NOI", "NOISE")),
         WaveformType.DC: ("DC", ("DC",)),
+        WaveformType.SWEEP: ("SWEep", ("SWE", "SWEEP")),
     }
 
     VOLTAGE_UNIT_MAP = {
@@ -335,7 +336,7 @@ class ScpiSignalGenerator(ScpiInstrument):
     @scpi_command(r"^(?:SOUR(?:ce)?(\d+)?:)?FUNC(?:tion)?\s+(\w+)$")
     def set_source_function_command(self, channel_str: Optional[str], parameter: str):
         """
-        [SOURce<n>:]FUNCtion {SINusoid|SQUare|PULSe|TRIangle|NOISe|DC}
+        [SOURce<n>:]FUNCtion {SINusoid|SQUare|PULSe|RAMP|NOISe|DC|SWEep}
         """
         channel = self.get_channel(channel_str)
         param_upper = parameter.upper()
@@ -638,6 +639,99 @@ class ScpiSignalGenerator(ScpiInstrument):
             maximum,
             self.default_channel_config.pulse_width,
             self.audio_interface.output_config[channel].pulse_width)
+
+    @scpi_command(r"^(?:SOUR(?:ce)?(\d+)?:)?FREQ(?:uency)?:STAR(?:t)?\s+(\S+)$")
+    def set_source_sweep_start_frequency_command(self, channel_str: Optional[str], parameter: str):
+        """
+        [SOURce<n>:]FREQuency:STARt {<frequency>|MINimum|MAXimum|DEFault}
+        """
+        channel = self.get_channel(channel_str)
+        minimum = 0.0
+        maximum = self.audio_interface.sample_rate / 2.0
+        frequency = self.get_float_parameter(
+            parameter,
+            minimum,
+            maximum,
+            self.default_channel_config.sweep_start_frequency_hz)
+        self.audio_interface.output_config[channel].sweep_start_frequency_hz = frequency
+        return None
+
+    @scpi_command(r"^(?:SOUR(?:ce)?(\d+)?:)?FREQ(?:uency)?:STAR(?:t)?\?(?:\s+(\S+))?$")
+    def get_source_sweep_start_frequency_command(self, channel_str: Optional[str], parameter: Optional[str]) -> str:
+        """
+        [SOURce<n>:]FREQuency:STARt? [{MINimum|MAXimum|DEFault}]
+        """
+        channel = self.get_channel(channel_str)
+        minimum = 0.0
+        maximum = self.audio_interface.sample_rate / 2.0
+        return self.get_float_parameter_value(
+            parameter,
+            minimum,
+            maximum,
+            self.default_channel_config.sweep_start_frequency_hz,
+            self.audio_interface.output_config[channel].sweep_start_frequency_hz)
+
+    @scpi_command(r"^(?:SOUR(?:ce)?(\d+)?:)?FREQ(?:uency)?:STOP\s+(\S+)$")
+    def set_source_sweep_stop_frequency_command(self, channel_str: Optional[str], parameter: str):
+        """
+        [SOURce<n>:]FREQuency:STOP {<frequency>|MINimum|MAXimum|DEFault}
+        """
+        channel = self.get_channel(channel_str)
+        minimum = 0.0
+        maximum = self.audio_interface.sample_rate / 2.0
+        frequency = self.get_float_parameter(
+            parameter,
+            minimum,
+            maximum,
+            self.default_channel_config.sweep_stop_frequency_hz)
+        self.audio_interface.output_config[channel].sweep_stop_frequency_hz = frequency
+        return None
+
+    @scpi_command(r"^(?:SOUR(?:ce)?(\d+)?:)?FREQ(?:uency)?:STOP\?(?:\s+(\S+))?$")
+    def get_source_sweep_stop_frequency_command(self, channel_str: Optional[str], parameter: Optional[str]) -> str:
+        """
+        [SOURce<n>:]FREQuency:STOP? [{MINimum|MAXimum|DEFault}]
+        """
+        channel = self.get_channel(channel_str)
+        minimum = 0.0
+        maximum = self.audio_interface.sample_rate / 2.0
+        return self.get_float_parameter_value(
+            parameter,
+            minimum,
+            maximum,
+            self.default_channel_config.sweep_stop_frequency_hz,
+            self.audio_interface.output_config[channel].sweep_stop_frequency_hz)
+
+    @scpi_command(r"^(?:SOUR(?:ce)?(\d+)?:)?SWE(?:ep)?:TIME\s+(\S+)$")
+    def set_source_sweep_time_command(self, channel_str: Optional[str], parameter: str):
+        """
+        [SOURce<n>:]SWEep:TIME {<seconds>|MINimum|MAXimum|DEFault}
+        """
+        channel = self.get_channel(channel_str)
+        minimum = 1e-3
+        maximum = 1000.0
+        duration = self.get_float_parameter(
+            parameter,
+            minimum,
+            maximum,
+            self.default_channel_config.sweep_duration_s)
+        self.audio_interface.output_config[channel].sweep_duration_s = duration
+        return None
+
+    @scpi_command(r"^(?:SOUR(?:ce)?(\d+)?:)?SWE(?:ep)?:TIME\?(?:\s+(\S+))?$")
+    def get_source_sweep_time_command(self, channel_str: Optional[str], parameter: Optional[str]) -> str:
+        """
+        [SOURce<n>:]SWEep:TIME? [{MINimum|MAXimum|DEFault}]
+        """
+        channel = self.get_channel(channel_str)
+        minimum = 1e-3
+        maximum = 1000.0
+        return self.get_float_parameter_value(
+            parameter,
+            minimum,
+            maximum,
+            self.default_channel_config.sweep_duration_s,
+            self.audio_interface.output_config[channel].sweep_duration_s)
 
 
 class ScpiServer:

@@ -17,12 +17,16 @@ Test and measurement code for my bench.
   - Digilent Analog Discovery 3
 - **Other supported hardware**
   - Amaran light fixtures
-  - Wincor Nixdorf BA63
+  - MOTU UltraLite mk5 audio interface
+  - Wincor Nixdorf BA63 display
   - TEMPer Gold
-- **Data Analysis Utilities**:
+- **Extras**:
+  - Dataloggers (CSV, InfluxDB, PostgreSQL, TimescaleDB)
+  - SCPI server microframework
   - Uncertainty calculation
   - Measurement formatting and unit handling
-  - Dataloggers (CSV, InfluxDB, Postgres / TimescaleDB)
+  - Solar irradiance calculations
+  - PT100 conversions
 
 ## Installation
 
@@ -70,6 +74,42 @@ type_b = get_type_b_uncertainty(expanded_type_b, k=2)
 expanded_uncertainty = get_expanded_uncertainty(type_a, type_b, k=2)
 
 print(f"Measurement: {np.mean(measurements):.7f} ± {expanded_uncertainty:.7f} V (k=2)")
+```
+
+### Audio interface as signal generator
+
+```python
+from workbench.instruments.motu_ultralite_mk5 import MOTOUltraLiteMk5
+
+with MOTOUltraLiteMk5.connect() as interface:
+    interface.output_config[0].output_enabled = True
+    interface.output_config[0].frequency_hz = 1000
+```
+
+### SCPI Server microframework
+
+```python
+from datetime import date
+
+from workbench.utils.server import ScpiInstrument, ScpiServer, scpi_command
+
+
+class ScpiDateDevice(ScpiInstrument):
+    def __init__(self):
+        super().__init__("Example,DateDevice,SCPI,1.0")
+        self._date = date.today()
+
+    @scpi_command(r"^SYST(?:em)?:DATE\?$")
+    def get_system_date(self) -> str:
+        return self._date.strftime("%Y,%m,%d")
+
+    @scpi_command(r"^SYST(?:em)?:DATE\\s+(\\d{4},\\d{2},\\d{2})$")
+    def set_system_date(self, value: str) -> None:
+        self._date = date.fromisoformat(value.replace(",", "-"))
+
+
+server = ScpiServer(ScpiDateDevice())
+server.start()
 ```
 
 ## License
