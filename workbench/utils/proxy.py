@@ -1,0 +1,12 @@
+import logging
+import sys
+
+from pyvisa_proxy.__main__ import main, parse_arguments
+
+
+if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s"
+    )
+    args = parse_arguments(sys.argv[1:])
+    main(args.port, args.rpc_port, args.backend)
