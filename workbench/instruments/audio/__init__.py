@@ -173,6 +173,7 @@ class AudioInterface(Instrument, ABC):
             samplerate=sample_rate,
             callback=self.callback)
 
+
     def reset(self):
         self.output_config = [self.get_default_channel_config(i) for i in range(self.output_channels)]
         self.output_phases = np.zeros(self.output_channels)

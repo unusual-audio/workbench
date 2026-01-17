@@ -797,21 +797,6 @@ graph = ["objgraph (>=1.7.2)"]
 profile = ["gprof2dot (>=2022.7.29)"]
 
 [[package]]
-name = "dwfpy"
-version = "1.2.0"
-description = "Python Bindings for Digilent WaveForms API"
-optional = false
-python-versions = ">=3.8"
-groups = ["main"]
-files = [
-    {file = "dwfpy-1.2.0-py3-none-any.whl", hash = "sha256:fc313345bc1007f1e3c9ecef2ec9cc44713933b277e062fa0458bbf38c5d9c4a"},
-    {file = "dwfpy-1.2.0.tar.gz", hash = "sha256:83f2667700c84804cdeccace593442a6d49a0cd85ece88772fdcdfb9f3c331c9"},
-]
-
-[package.dependencies]
-numpy = "*"
-
-[[package]]
 name = "executing"
 version = "2.2.1"
 description = "Get the currently executing AST node of a frame, and other information"
@@ -3955,4 +3940,4 @@ ifaddr = ">=0.1.7"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<4"
-content-hash = "05095d88d95009991ae5a84dfbd1e24f67d1c1f00959d6e3a6f3b998c12b0bfd"
+content-hash = "b038a83d6c918271dcb7f319e4bddfae40f419b06d97f8c746c0ddd791ff08f5"

@@ -14,7 +14,6 @@ Test and measurement code for my bench.
   - Brymen BM869S
   - Fluke 2620A
   - Siglent SDG1022X+
-  - Digilent Analog Discovery 3
 - **Other supported hardware**
   - Amaran light fixtures
   - MOTU UltraLite mk5 audio interface
