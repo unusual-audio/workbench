@@ -19,6 +19,8 @@ Test and measurement code for my bench.
   - MOTU UltraLite mk5 audio interface
   - Wincor Nixdorf BA63 display
   - TEMPer Gold
+  - UNI-T UT333BT temperature and humidity meter
+  - UNI-T UT353BT sound level meter
 - **Extras**:
   - Dataloggers (CSV, InfluxDB, PostgreSQL, TimescaleDB)
   - SCPI server microframework
