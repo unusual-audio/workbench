@@ -6,11 +6,11 @@ from bleak import BleakClient, BleakScanner
 
 from workbench.instruments import Instrument
 
-CHAR_WRITE = "0000ff01-0000-1000-8000-00805f9b34fb"
-CHAR_NOTIFY = "0000ff02-0000-1000-8000-00805f9b34fb"
 
+class UNITUT3X3BT(Instrument):
 
-class UT3X3BT(Instrument):
+    CHAR_WRITE = "0000ff01-0000-1000-8000-00805f9b34fb"
+    CHAR_NOTIFY = "0000ff02-0000-1000-8000-00805f9b34fb"
 
     def __init__(self, address: str):
         self.client = BleakClient(address)
@@ -18,11 +18,11 @@ class UT3X3BT(Instrument):
 
     async def __aenter__(self) -> Self:
         await self.client.connect()
-        await self.client.start_notify(CHAR_NOTIFY, lambda _, data: self.queue.put_nowait(data))
+        await self.client.start_notify(self.CHAR_NOTIFY, lambda _, data: self.queue.put_nowait(data))
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
-        await self.client.stop_notify(CHAR_NOTIFY)
+        await self.client.stop_notify(self.CHAR_NOTIFY)
         await self.client.disconnect()
 
     async def __aiter__(self):
@@ -32,7 +32,7 @@ class UT3X3BT(Instrument):
             except QueueEmpty:
                 break
         while True:
-            await self.client.write_gatt_char(CHAR_WRITE, b"\x5e")
+            await self.client.write_gatt_char(self.CHAR_WRITE, b"\x5e")
             try:
                 yield self.queue.get_nowait()
             except QueueEmpty:

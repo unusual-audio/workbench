@@ -1,10 +1,10 @@
 import asyncio
 from typing import Tuple
 
-from workbench.instruments.ble import UT3X3BT
+from workbench.instruments.ble import UNITUT3X3BT
 
 
-class UT333BT(UT3X3BT):
+class UNITUT333BT(UNITUT3X3BT):
 
     async def fetch(self) -> Tuple[float, float]:
         temperature, humidity = None, None
@@ -22,7 +22,7 @@ class UT333BT(UT3X3BT):
 
 if __name__ == "__main__":
     async def main():
-        async with UT333BT.connect("743EB3A4-3784-A384-7EAD-6531496DA19B") as i:
+        async with UNITUT333BT.connect("743EB3A4-3784-A384-7EAD-6531496DA19B") as i:
             print(await i.fetch())
 
 
