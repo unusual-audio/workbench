@@ -12,8 +12,8 @@ class UNITUT3X3BT(Instrument):
     CHAR_WRITE = "0000ff01-0000-1000-8000-00805f9b34fb"
     CHAR_NOTIFY = "0000ff02-0000-1000-8000-00805f9b34fb"
 
-    def __init__(self, address: str):
-        self.client = BleakClient(address)
+    def __init__(self, address: str, timeout: float = 30):
+        self.client = BleakClient(address, timeout=timeout)
         self.queue = Queue()
 
     async def __aenter__(self) -> Self:
@@ -39,14 +39,14 @@ class UNITUT3X3BT(Instrument):
                 await asyncio.sleep(0.001)
 
     @classmethod
-    async def find(cls, name_or_address="UT333BT") -> Self:
+    async def find(cls, name_or_address="UT333BT", timeout: float = 30, discover_timeout: float = 5) -> Self:
         async with BleakScanner() as scanner:
-            devices = await scanner.discover()
+            devices = await scanner.discover(timeout=discover_timeout)
             for device in devices:
                 if device.name == name_or_address or device.address == name_or_address:
-                    return cls(address=device.address)
+                    return cls(address=device.address, timeout=timeout)
             raise RuntimeError("Device not found")
 
     @classmethod
-    def connect(cls, address: str) -> Self:
-        return cls(address)
+    def connect(cls, address: str, timeout: float = 30) -> Self:
+        return cls(address, timeout=timeout)
