@@ -15,7 +15,6 @@ Test and measurement code for my bench.
   - Fluke 2620A
   - Siglent SDG1022X+
 - **Other supported hardware**
-  - Amaran light fixtures
   - Wincor Nixdorf BA63 display
   - TEMPer Gold
   - UNI-T UT333BT temperature and humidity meter
