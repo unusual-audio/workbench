@@ -1,5 +1,7 @@
 # Workbench
 
+<img width="6000" height="2404" alt="DSC02328" src="https://github.com/user-attachments/assets/8ea31d8c-dd82-4e02-8192-25ebcec176f3" />
+
 Test and measurement code for my bench.
 
 ## Features
